@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Changelog → OG | Indie Agent Kit</title>
+  <meta name="description" content="Paste changelog or release notes. Get an OG social card preview, downloadable PNG/SVG, and tweet/LinkedIn blurbs. Client-side only. Free tool from Indie Agent Kit / boltdoesthis." />
+  <meta name="theme-color" content="#0f1115" />
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1e2330;
+      --border: #2a3142;
+      --text: #e8ecf4;
+      --muted: #9aa3b5;
+      --accent: #6ee7b7;
+      --accent-dim: #34d399;
+      --warn: #fbbf24;
+      --radius: 12px;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: radial-gradient(1200px 600px at 10% -10%, #1a2740 0%, transparent 55%),
+                  radial-gradient(900px 500px at 100% 0%, #13281f 0%, transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    a { color: var(--accent); }
+    a:hover { color: var(--accent-dim); }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 56ch;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: rgba(110, 231, 183, 0.08);
+      border: 1px solid rgba(110, 231, 183, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 480px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .panel-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      background: #0c0e13;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(110, 231, 183, 0.55);
+      box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.12);
+    }
+
+    textarea {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.45;
+      resize: vertical;
+      min-height: 260px;
+      flex: 1;
+    }
+
+    textarea.blurb {
+      font-family: var(--font);
+      font-size: 0.9rem;
+      min-height: 110px;
+      flex: 0;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .row3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 560px) {
+      .row, .row3 { grid-template-columns: 1fr; }
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 9px 14px;
+      font-size: 0.88rem;
+      transition: background 0.15s, border-color 0.15s, transform 0.05s;
+    }
+
+    button:hover { border-color: #3d4660; background: #242a3a; }
+    button:active { transform: translateY(1px); }
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button.primary {
+      background: linear-gradient(180deg, #3dd68c, #22b87a);
+      color: #062015;
+      border-color: transparent;
+      font-weight: 650;
+    }
+
+    button.primary:hover {
+      filter: brightness(1.05);
+      background: linear-gradient(180deg, #4ae09a, #28c686);
+    }
+
+    button.ghost { background: transparent; }
+
+    .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .canvas-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0c0e13;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 220px;
+      overflow: auto;
+    }
+
+    #ogCanvas {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      background: #111;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .stats strong { color: var(--text); font-weight: 600; }
+
+    .blurb-block {
+      background: #0c0e13;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .blurb-block h3 {
+      margin: 0;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .char-count.warn { color: var(--warn); }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      justify-content: space-between;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #123528;
+      color: var(--accent);
+      border: 1px solid rgba(110, 231, 183, 0.35);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 50;
+    }
+
+    .toast.show { opacity: 1; }
+
+    details.help {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+    }
+
+    details.help summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    details.help p, details.help ul {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin: 10px 0 0;
+    }
+
+    details.help code {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      background: #0c0e13;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .split-out {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span class="badge">Free micro-tool · client-side only</span>
+        <h1>Changelog → OG</h1>
+        <p>Paste release notes or a changelog. Get a social card preview, downloadable PNG or SVG, and short tweet / LinkedIn blurbs. Nothing leaves your browser.</p>
+      </div>
+    </header>
+
+    <details class="help">
+      <summary>What this reads (and how to get a clean card)</summary>
+      <p>Looks for a version (<code>v1.2.0</code> or <code>## [1.2.0]</code>), a title or H1/H2, bullet highlights (<code>-</code> / <code>*</code> / <code>•</code>), and an optional date. Keep the top of your notes short: version line, one sentence summary, 3–5 bullets.</p>
+      <ul>
+        <li>OG card is drawn at 1200×630 (standard social size). Preview scales down; download is full size.</li>
+        <li>PNG via canvas. SVG is a matching vector export you can edit later.</li>
+        <li>Part of <strong>Indie Agent Kit</strong> / boltdoesthis free tools.</li>
+      </ul>
+    </details>
+
+    <div class="layout">
+      <section class="panel" aria-label="Input">
+        <div class="panel-head">
+          <h2>Input</h2>
+          <div class="actions">
+            <button type="button" class="ghost" id="btnSample">Load sample</button>
+            <button type="button" class="ghost" id="btnClear">Clear</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div>
+              <label for="productName">Product name</label>
+              <input type="text" id="productName" placeholder="e.g. Ship Kit" value="" />
+            </div>
+            <div>
+              <label for="versionOverride">Version override (optional)</label>
+              <input type="text" id="versionOverride" placeholder="Leave blank to auto-detect" />
+            </div>
+          </div>
+          <div class="row3">
+            <div>
+              <label for="theme">Card theme</label>
+              <select id="theme">
+                <option value="ink">Ink</option>
+                <option value="mint">Mint</option>
+                <option value="paper">Paper</option>
+                <option value="violet">Violet</option>
+              </select>
+            </div>
+            <div>
+              <label for="accentLabel">Footer / handle (optional)</label>
+              <input type="text" id="accentLabel" placeholder="boltdoesthis" />
+            </div>
+            <div>
+              <label for="maxBullets">Max bullets on card</label>
+              <select id="maxBullets">
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="source">Changelog / release notes (Markdown or plain text)</label>
+            <textarea id="source" placeholder="## v1.2.0 - Ship faster&#10;&#10;- New export formats&#10;- Faster preview&#10;- Bug fixes"></textarea>
+          </div>
+          <div class="actions">
+            <button type="button" class="primary" id="btnGenerate">Generate card</button>
+            <button type="button" id="btnPng" disabled>Download PNG</button>
+            <button type="button" id="btnSvg" disabled>Download SVG</button>
+          </div>
+          <p class="hint">Tip: Keep highlights short. Cards look best with 3–4 crisp bullets.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Output">
+        <div class="panel-head">
+          <h2>Preview + copy</h2>
+          <div class="stats" id="stats"></div>
+        </div>
+        <div class="panel-body split-out">
+          <div class="canvas-wrap">
+            <canvas id="ogCanvas" width="1200" height="630" aria-label="OG card preview"></canvas>
+          </div>
+
+          <div class="blurb-block">
+            <h3>Suggested tweet</h3>
+            <textarea class="blurb" id="tweetBlurb" readonly placeholder="Generate to fill…"></textarea>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="ghost" id="btnCopyTweet" disabled>Copy tweet</button>
+              <span class="char-count" id="tweetCount">0 / 280</span>
+            </div>
+          </div>
+
+          <div class="blurb-block">
+            <h3>Suggested LinkedIn blurb</h3>
+            <textarea class="blurb" id="liBlurb" readonly placeholder="Generate to fill…"></textarea>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="ghost" id="btnCopyLi" disabled>Copy LinkedIn</button>
+              <span class="char-count" id="liCount">0 chars</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <span>Changelog → OG · free micro-tool from <strong>Indie Agent Kit</strong> / boltdoesthis</span>
+      <span>Runs fully in your browser · MIT</span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+(function () {
+  const SAMPLE = `# Ship Kit v1.4.0
+
+Shipped a quieter release week focused on exports and fewer clicks.
+
+## Highlights
+- One-click PNG + SVG social cards from release notes
+- LinkedIn + tweet blurbs generated from the same notes
+- Theme presets: Ink, Mint, Paper, Violet
+- Fixed empty-bullet crash on short changelogs
+
+## Fixes
+- Preview scale on narrow screens
+- Safer markdown stripping for bold/italic
+
+Released 2026-09-07
+`;
+
+  const THEMES = {
+    ink: {
+      bg: "#0f1115",
+      bg2: "#171a21",
+      text: "#e8ecf4",
+      muted: "#9aa3b5",
+      accent: "#6ee7b7",
+      line: "#2a3142",
+      badgeBg: "rgba(110,231,183,0.12)",
+      badgeText: "#6ee7b7",
+    },
+    mint: {
+      bg: "#0c1a14",
+      bg2: "#12261c",
+      text: "#e8faf0",
+      muted: "#8fb8a4",
+      accent: "#34d399",
+      line: "#1e3d2e",
+      badgeBg: "rgba(52,211,153,0.15)",
+      badgeText: "#6ee7b7",
+    },
+    paper: {
+      bg: "#f6f3ec",
+      bg2: "#efe9dc",
+      text: "#1a1a1a",
+      muted: "#5c5c5c",
+      accent: "#0d7a4f",
+      line: "#d9d0bf",
+      badgeBg: "rgba(13,122,79,0.12)",
+      badgeText: "#0d7a4f",
+    },
+    violet: {
+      bg: "#12101a",
+      bg2: "#1a1628",
+      text: "#efeaf8",
+      muted: "#a39bb8",
+      accent: "#c4b5fd",
+      line: "#2e2942",
+      badgeBg: "rgba(196,181,253,0.14)",
+      badgeText: "#c4b5fd",
+    },
+  };
+
+  const source = document.getElementById("source");
+  const productName = document.getElementById("productName");
+  const versionOverride = document.getElementById("versionOverride");
+  const theme = document.getElementById("theme");
+  const accentLabel = document.getElementById("accentLabel");
+  const maxBullets = document.getElementById("maxBullets");
+  const canvas = document.getElementById("ogCanvas");
+  const ctx = canvas.getContext("2d");
+  const stats = document.getElementById("stats");
+  const tweetBlurb = document.getElementById("tweetBlurb");
+  const liBlurb = document.getElementById("liBlurb");
+  const tweetCount = document.getElementById("tweetCount");
+  const liCount = document.getElementById("liCount");
+  const toast = document.getElementById("toast");
+
+  const btnGenerate = document.getElementById("btnGenerate");
+  const btnPng = document.getElementById("btnPng");
+  const btnSvg = document.getElementById("btnSvg");
+  const btnSample = document.getElementById("btnSample");
+  const btnClear = document.getElementById("btnClear");
+  const btnCopyTweet = document.getElementById("btnCopyTweet");
+  const btnCopyLi = document.getElementById("btnCopyLi");
+
+  let lastParsed = null;
+  let lastSvg = "";
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove("show"), 1800);
+  }
+
+  function stripMd(s) {
+    return String(s || "")
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+      .replace(/[*_`~]/g, "")
+      .replace(/^#+\s*/, "")
+      .trim();
+  }
+
+  function parseChangelog(raw) {
+    const lines = raw.replace(/\r\n/g, "\n").split("\n");
+    let version = "";
+    let title = "";
+    let summary = "";
+    let date = "";
+    const bullets = [];
+
+    const versionRe = /\bv?(\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.]+)?)\b/i;
+    const dateRe = /\b(20\d{2}[-/.]\d{1,2}[-/.]\d{1,2}|\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+20\d{2})\b/i;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      if (!version) {
+        const m = line.match(versionRe);
+        if (m) version = "v" + m[1].replace(/^v/i, "");
+      }
+
+      if (!date) {
+        const dm = line.match(dateRe);
+        if (dm) date = dm[1];
+      }
+
+      if (!title && /^#{1,3}\s+/.test(line)) {
+        title = stripMd(line);
+        continue;
+      }
+
+      if (/^[-*•]\s+/.test(line) || /^\d+\.\s+/.test(line)) {
+        const b = stripMd(line.replace(/^[-*•]\s+/, "").replace(/^\d+\.\s+/, ""));
+        if (b && bullets.length < 12) bullets.push(b);
+        continue;
+      }
+
+      if (!summary && !/^#{1,6}\s/.test(line) && !/^---+$/.test(line) && line.length > 12) {
+        // Skip pure version-only lines as summary
+        if (!/^v?\d+\.\d+/.test(line) && !/^released?\b/i.test(line)) {
+          summary = stripMd(line);
+        }
+      }
+    }
+
+    if (!title && version) title = version + " release";
+    if (!title) {
+      const first = lines.map((l) => l.trim()).find((l) => l && !/^[-*•]/.test(l));
+      title = stripMd(first || "New release");
+    }
+
+    // Clean title: drop leading version if we already have version separate
+    if (version && title) {
+      title = title
+        .replace(new RegExp("^\\[?" + version.replace(".", "\\.") + "\\]?\\s*[—–:-]?\\s*", "i"), "")
+        .replace(/^v?\d+\.\d+\.\d+\s*[—–:-]?\s*/i, "")
+        .trim() || title;
+    }
+
+    return { version, title, summary, bullets, date };
+  }
+
+  function wrapText(context, text, maxWidth) {
+    const words = text.split(/\s+/);
+    const lines = [];
+    let cur = "";
+    for (const w of words) {
+      const test = cur ? cur + " " + w : w;
+      if (context.measureText(test).width > maxWidth && cur) {
+        lines.push(cur);
+        cur = w;
+      } else {
+        cur = test;
+      }
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  }
+
+  function roundRect(context, x, y, w, h, r) {
+    const rr = Math.min(r, w / 2, h / 2);
+    context.beginPath();
+    context.moveTo(x + rr, y);
+    context.arcTo(x + w, y, x + w, y + h, rr);
+    context.arcTo(x + w, y + h, x, y + h, rr);
+    context.arcTo(x, y + h, x, y, rr);
+    context.arcTo(x, y, x + w, y, rr);
+    context.closePath();
+  }
+
+  function drawCard(parsed, opts) {
+    const t = THEMES[opts.theme] || THEMES.ink;
+    const W = 1200;
+    const H = 630;
+    const pad = 64;
+    const maxB = opts.maxBullets;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Background
+    ctx.fillStyle = t.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Soft gradient blob
+    const g = ctx.createRadialGradient(W * 0.85, H * 0.15, 20, W * 0.75, H * 0.2, 420);
+    g.addColorStop(0, t.accent + "33");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    // Left accent bar
+    ctx.fillStyle = t.accent;
+    ctx.fillRect(0, 0, 10, H);
+
+    // Inner panel
+    ctx.fillStyle = t.bg2;
+    roundRect(ctx, pad - 24, pad - 24, W - (pad - 24) * 2, H - (pad - 24) * 2, 20);
+    ctx.fill();
+    ctx.strokeStyle = t.line;
+    ctx.lineWidth = 2;
+    roundRect(ctx, pad - 24, pad - 24, W - (pad - 24) * 2, H - (pad - 24) * 2, 20);
+    ctx.stroke();
+
+    let y = pad + 8;
+
+    // Badge: version
+    const badge = parsed.version || "Release";
+    ctx.font = "600 22px Segoe UI, system-ui, sans-serif";
+    const badgeW = ctx.measureText(badge).width + 28;
+    ctx.fillStyle = t.badgeBg;
+    roundRect(ctx, pad, y, badgeW, 40, 20);
+    ctx.fill();
+    ctx.fillStyle = t.badgeText;
+    ctx.fillText(badge, pad + 14, y + 28);
+    y += 64;
+
+    // Product name
+    const name = (opts.productName || "Product").trim() || "Product";
+    ctx.fillStyle = t.muted;
+    ctx.font = "500 26px Segoe UI, system-ui, sans-serif";
+    ctx.fillText(name, pad, y);
+    y += 44;
+
+    // Title
+    ctx.fillStyle = t.text;
+    ctx.font = "700 48px Segoe UI, system-ui, sans-serif";
+    const titleLines = wrapText(ctx, parsed.title || "New release", W - pad * 2 - 20).slice(0, 2);
+    for (const tl of titleLines) {
+      ctx.fillText(tl, pad, y);
+      y += 56;
+    }
+    y += 8;
+
+    // Summary (one line)
+    if (parsed.summary) {
+      ctx.fillStyle = t.muted;
+      ctx.font = "400 26px Segoe UI, system-ui, sans-serif";
+      const sumLines = wrapText(ctx, parsed.summary, W - pad * 2 - 20).slice(0, 2);
+      for (const sl of sumLines) {
+        ctx.fillText(sl, pad, y);
+        y += 34;
+      }
+      y += 14;
+    }
+
+    // Bullets
+    const bullets = parsed.bullets.slice(0, maxB);
+    ctx.font = "500 28px Segoe UI, system-ui, sans-serif";
+    for (const b of bullets) {
+      ctx.fillStyle = t.accent;
+      ctx.beginPath();
+      ctx.arc(pad + 10, y - 8, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = t.text;
+      const bl = wrapText(ctx, b, W - pad * 2 - 48).slice(0, 1)[0] || b;
+      ctx.fillText(bl, pad + 28, y);
+      y += 42;
+      if (y > H - 90) break;
+    }
+
+    // Footer
+    const foot = [];
+    if (parsed.date) foot.push(parsed.date);
+    if (opts.accentLabel) foot.push(opts.accentLabel);
+    foot.push("Indie Agent Kit");
+    ctx.fillStyle = t.muted;
+    ctx.font = "400 22px Segoe UI, system-ui, sans-serif";
+    ctx.fillText(foot.join("  ·  "), pad, H - pad + 8);
+
+    // Build SVG twin
+    lastSvg = buildSvg(parsed, opts, t, name, bullets, titleLines, foot);
+  }
+
+  function escXml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function buildSvg(parsed, opts, t, name, bullets, titleLines, foot) {
+    const W = 1200;
+    const H = 630;
+    const pad = 64;
+    let y = pad + 8;
+    const badge = parsed.version || "Release";
+
+    let body = "";
+    // badge approx
+    body += `<rect x="${pad}" y="${y}" width="${Math.min(220, 28 + badge.length * 14)}" height="40" rx="20" fill="${t.badgeBg}"/>`;
+    body += `<text x="${pad + 14}" y="${y + 28}" fill="${t.badgeText}" font-family="Segoe UI, system-ui, sans-serif" font-size="22" font-weight="600">${escXml(badge)}</text>`;
+    y += 64;
+    body += `<text x="${pad}" y="${y}" fill="${t.muted}" font-family="Segoe UI, system-ui, sans-serif" font-size="26" font-weight="500">${escXml(name)}</text>`;
+    y += 44;
+    for (const tl of titleLines) {
+      body += `<text x="${pad}" y="${y}" fill="${t.text}" font-family="Segoe UI, system-ui, sans-serif" font-size="48" font-weight="700">${escXml(tl)}</text>`;
+      y += 56;
+    }
+    y += 8;
+    if (parsed.summary) {
+      const approx = parsed.summary.length > 70 ? parsed.summary.slice(0, 67) + "…" : parsed.summary;
+      body += `<text x="${pad}" y="${y}" fill="${t.muted}" font-family="Segoe UI, system-ui, sans-serif" font-size="26">${escXml(approx)}</text>`;
+      y += 48;
+    }
+    for (const b of bullets) {
+      const bl = b.length > 62 ? b.slice(0, 59) + "…" : b;
+      body += `<circle cx="${pad + 10}" cy="${y - 8}" r="6" fill="${t.accent}"/>`;
+      body += `<text x="${pad + 28}" y="${y}" fill="${t.text}" font-family="Segoe UI, system-ui, sans-serif" font-size="28" font-weight="500">${escXml(bl)}</text>`;
+      y += 42;
+    }
+    body += `<text x="${pad}" y="${H - pad + 8}" fill="${t.muted}" font-family="Segoe UI, system-ui, sans-serif" font-size="22">${escXml(foot.join("  ·  "))}</text>`;
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+  <rect width="${W}" height="${H}" fill="${t.bg}"/>
+  <defs>
+    <radialGradient id="g" cx="75%" cy="20%" r="40%">
+      <stop offset="0%" stop-color="${t.accent}" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="${t.accent}" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="${W}" height="${H}" fill="url(#g)"/>
+  <rect x="0" y="0" width="10" height="${H}" fill="${t.accent}"/>
+  <rect x="${pad - 24}" y="${pad - 24}" width="${W - (pad - 24) * 2}" height="${H - (pad - 24) * 2}" rx="20" fill="${t.bg2}" stroke="${t.line}" stroke-width="2"/>
+  ${body}
+</svg>`;
+  }
+
+  function buildBlurbs(parsed, opts) {
+    const name = (opts.productName || "this project").trim() || "this project";
+    const ver = parsed.version || "a new release";
+    const highlights = parsed.bullets.slice(0, 3);
+    const bulletLine = highlights.map((b) => "• " + b).join("\n");
+
+    let tweet =
+      `${name} ${ver} is out.\n\n` +
+      (highlights.length ? highlights.map((b) => "• " + b).join("\n") + "\n\n" : "") +
+      (parsed.summary ? parsed.summary.slice(0, 100) + (parsed.summary.length > 100 ? "…" : "") + "\n\n" : "") +
+      "Link in replies / bio.";
+
+    if (tweet.length > 280) {
+      tweet =
+        `${name} ${ver} is out.\n\n` +
+        highlights.slice(0, 2).map((b) => "• " + b).join("\n") +
+        "\n\nLink in replies.";
+    }
+    if (tweet.length > 280) tweet = tweet.slice(0, 277) + "…";
+
+    const li =
+      `Shipped ${name} ${ver}.\n\n` +
+      (parsed.summary ? parsed.summary + "\n\n" : "") +
+      (bulletLine ? "What's new:\n" + bulletLine + "\n\n" : "") +
+      `If you use ${name}, grab the update and tell me what breaks.\n\n` +
+      `#buildinpublic #indiehacker #shipping`;
+
+    return { tweet, li };
+  }
+
+  function updateCharCounts() {
+    const tc = tweetBlurb.value.length;
+    tweetCount.textContent = tc + " / 280";
+    tweetCount.classList.toggle("warn", tc > 280);
+    liCount.textContent = liBlurb.value.length + " chars";
+  }
+
+  function slugify(s) {
+    return (s || "release")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "release";
+  }
+
+  function generate() {
+    const raw = source.value.trim();
+    if (!raw) {
+      showToast("Paste changelog notes first");
+      return;
+    }
+    const parsed = parseChangelog(raw);
+    if (versionOverride.value.trim()) {
+      let v = versionOverride.value.trim();
+      if (!/^v/i.test(v)) v = "v" + v;
+      parsed.version = v;
+    }
+    lastParsed = parsed;
+    const opts = {
+      productName: productName.value,
+      theme: theme.value,
+      accentLabel: accentLabel.value.trim(),
+      maxBullets: parseInt(maxBullets.value, 10) || 4,
+    };
+    drawCard(parsed, opts);
+    const blurbs = buildBlurbs(parsed, opts);
+    tweetBlurb.value = blurbs.tweet;
+    liBlurb.value = blurbs.li;
+    updateCharCounts();
+
+    btnPng.disabled = false;
+    btnSvg.disabled = false;
+    btnCopyTweet.disabled = false;
+    btnCopyLi.disabled = false;
+
+    stats.innerHTML =
+      `<span><strong>${parsed.version || "-"}</strong></span>` +
+      `<span><strong>${parsed.bullets.length}</strong> bullets</span>` +
+      `<span>1200×630</span>` +
+      (parsed.date ? `<span>${escapeHtml(parsed.date)}</span>` : "");
+
+    showToast("Card ready");
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function downloadPng() {
+    canvas.toBlob(function (blob) {
+      if (!blob) {
+        showToast("PNG export failed");
+        return;
+      }
+      const name = slugify((productName.value || "release") + "-" + (lastParsed && lastParsed.version || "og"));
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = name + ".png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      showToast("PNG downloaded");
+    }, "image/png");
+  }
+
+  function downloadSvg() {
+    if (!lastSvg) return;
+    const name = slugify((productName.value || "release") + "-" + (lastParsed && lastParsed.version || "og"));
+    const blob = new Blob([lastSvg], { type: "image/svg+xml;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name + ".svg";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    showToast("SVG downloaded");
+  }
+
+  async function copyText(el, label) {
+    try {
+      await navigator.clipboard.writeText(el.value);
+      showToast(label + " copied");
+    } catch {
+      el.select();
+      showToast("Select + copy manually");
+    }
+  }
+
+  function clearAll() {
+    source.value = "";
+    productName.value = "";
+    versionOverride.value = "";
+    lastParsed = null;
+    lastSvg = "";
+    tweetBlurb.value = "";
+    liBlurb.value = "";
+    updateCharCounts();
+    stats.innerHTML = "";
+    btnPng.disabled = true;
+    btnSvg.disabled = true;
+    btnCopyTweet.disabled = true;
+    btnCopyLi.disabled = true;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#0c0e13";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#9aa3b5";
+    ctx.font = "28px Segoe UI, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Paste notes and hit Generate", canvas.width / 2, canvas.height / 2);
+    ctx.textAlign = "left";
+  }
+
+  btnGenerate.addEventListener("click", generate);
+  btnPng.addEventListener("click", downloadPng);
+  btnSvg.addEventListener("click", downloadSvg);
+  btnSample.addEventListener("click", () => {
+    source.value = SAMPLE;
+    productName.value = "Ship Kit";
+    versionOverride.value = "";
+    accentLabel.value = "boltdoesthis";
+    generate();
+  });
+  btnClear.addEventListener("click", clearAll);
+  btnCopyTweet.addEventListener("click", () => copyText(tweetBlurb, "Tweet"));
+  btnCopyLi.addEventListener("click", () => copyText(liBlurb, "LinkedIn"));
+
+  ["change"].forEach((ev) => {
+    theme.addEventListener(ev, () => {
+      if (source.value.trim() && lastParsed) generate();
+    });
+    maxBullets.addEventListener(ev, () => {
+      if (source.value.trim() && lastParsed) generate();
+    });
+  });
+
+  // Placeholder canvas
+  clearAll();
+})();
+  </script>
+</body>
+</html>
