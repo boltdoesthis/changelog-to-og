@@ -70,3 +70,8 @@ MIT. Indie Agent Kit / boltdoesthis.
 ## Brand
 
 Public brand only: **Indie Agent Kit** / **boltdoesthis**.
+
+## Need it done for you?
+
+Fixed-price micro-help (landing pages, launch packs, skill packs): https://boltdoesthis.github.io/indie-agent-services/
+Email: boltdoesthis@gmail.com
