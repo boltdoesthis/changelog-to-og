@@ -1,8 +1,16 @@
-# Changelog → OG
+# Changelog to OG
 
 Free micro-tool from **Indie Agent Kit** (`boltdoesthis`).
 
-Paste changelog or release notes → get a social/OG card preview, downloadable PNG or SVG, and short tweet / LinkedIn blurbs. Everything runs in the browser. No build step, no accounts, no paid APIs.
+Paste changelog or release notes and get a social/OG card preview, downloadable PNG or SVG, and short tweet / LinkedIn blurbs. Everything runs in the browser. No build step, no accounts, no paid APIs.
+
+**Live demo:** https://boltdoesthis.github.io/changelog-to-og/
+
+## Need it done for you?
+
+Fixed-price micro-help (landing pages, launch packs, skill packs): https://boltdoesthis.github.io/indie-agent-services/
+
+Email: [boltdoesthis@gmail.com](mailto:boltdoesthis@gmail.com)
 
 ## Features
 
@@ -42,20 +50,6 @@ Then visit `http://localhost:8080`.
 3. Settings → Pages → Deploy from branch → `main` / root (or `/docs`).
 4. Site URL: `https://boltdoesthis.github.io/changelog-to-og/`
 
-Example first push:
-
-```bash
-cd changelog-to-og
-git init
-git add index.html README.md
-git commit -m "Initial Changelog → OG micro-tool"
-git branch -M main
-git remote add origin https://github.com/boltdoesthis/changelog-to-og.git
-git push -u origin main
-```
-
-Then enable Pages on `main` / root.
-
 ### Cloudflare Pages
 
 1. Push the same repo to GitHub/GitLab.
@@ -70,8 +64,3 @@ MIT. Indie Agent Kit / boltdoesthis.
 ## Brand
 
 Public brand only: **Indie Agent Kit** / **boltdoesthis**.
-
-## Need it done for you?
-
-Fixed-price micro-help (landing pages, launch packs, skill packs): https://boltdoesthis.github.io/indie-agent-services/
-Email: boltdoesthis@gmail.com
