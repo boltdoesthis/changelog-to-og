@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://boltdoesthis.github.io/changelog-to-og/sitemap.xml
